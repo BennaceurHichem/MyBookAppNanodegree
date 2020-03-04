@@ -12,7 +12,7 @@ class Book extends React.Component{
         
   */     
 
-  let shelf = this.props.book.shelf ?this.props.book.shelf:"none"
+  let shelf = this.props.shelf ?this.props.book.shelf:"none"
 
         this.state={
             shelf: shelf

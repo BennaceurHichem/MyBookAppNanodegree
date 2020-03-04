@@ -14,16 +14,25 @@ import history from './history'
 
 class SearchBar extends Component{
 
-state  = {
 
-  searchWords : '',
+  constructor(props) {
+    super(props);
 
-  necessaryData : [],
-  /*check if the keyword is valid or not, it will be used to not displaying any book in case of access to the api problem */
-  isValid: true,
+    this.state  = {
+
+      searchWords : '',
+    
+      necessaryData : [],
+      /*check if the keyword is valid or not, it will be used to not displaying any book in case of access to the api problem */
+      isValid: true,
+    
+    
+    }
+
+  }
 
 
-}
+
 /*
 filterList = (value) => {
   let books = this.props.books;
@@ -69,54 +78,7 @@ books.map((book)=>{
 
 
 
-updateSearch = (search)=>{
 
-   
-  this.setState(() => ({
-    searchWords: search.trim(),
-    isValid:true
-  }))
- console.log("search words "+this.state.searchWords)
-
- 
-
-  BooksAPI.search(this.state.searchWords).then((book)=>{
-
-    var arrayOfSearchedBooks = []
-
-
-
-Object.keys(book).map( (key)=>{
-
-  arrayOfSearchedBooks.push(book[key])
-})
-
-
-    console.log("taille of Array of searchedBooks after filtring ::   "+arrayOfSearchedBooks.length)
-    console.log("livre in search:  "+book)
-
-
-      //store filtered array by title and authors only in necessaryData list state
-    this.setState( {
-      necessaryData : arrayOfSearchedBooks
-                })
-
-
-
-
-  }).catch((err) => {
-
-      this.setState({
-
-        isValid:false
-      })
-    console.log("error in getting books from the db ")});
-
-
-
-
-}
-  
 
 
 
@@ -164,7 +126,7 @@ handleChangeBookState  = (e,book,oldShelf)=>{
           </Link>
                 <div className="search-books-input-wrapper">
           
-              <input type="text" placeholder="Search by title or author"   onChange={(event) => this.updateSearch(event.target.value)}/>
+              <input type="text" placeholder="Search by title or author"   onChange={(event) => this.props.updateSearch(event.target.value,this)}/>
 
             </div>
           </div>
@@ -177,10 +139,10 @@ handleChangeBookState  = (e,book,oldShelf)=>{
                           {  
                   
                   this.state.necessaryData.map((book) => {
-                   
+                      
                       return (
                     
-                        <Book  key={book.id} book={book} changeBookState ={this.handleChangeBookState} shelf={this.props.shelf}/>
+                        <Book  key={book.id} book={book} changeBookState ={this.handleChangeBookState} shelf={book.shelf}/>
 
                       )
                     
