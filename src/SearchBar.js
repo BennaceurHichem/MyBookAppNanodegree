@@ -17,7 +17,7 @@ class SearchBar extends Component{
 state  = {
 
   searchWords : '',
-  initialItems: [],
+
   necessaryData : [],
   /*check if the keyword is valid or not, it will be used to not displaying any book in case of access to the api problem */
   isValid: true,
@@ -123,14 +123,24 @@ Object.keys(book).map( (key)=>{
 
 
 
-handleChangeBookState = (e,book)=>{
+handleChangeBookState  = (e,book,oldShelf)=>{
+  //this function is executed when the user change the state of a book 
 
-  console.log("handleChangeBook called in ListBooks")
 
-console.log("selected value : "+e.target.value)
-console.log("bookID  in handleChange : "+book.id)
-  BooksAPI.update(book,e.target.value)
+  let  newShelf = e.target.value
+ console.log("new shelf from searchBar page :"+ newShelf)
 
+  book.setState({
+
+    shelf: newShelf
+  })
+   
+   
+  //now the only thing to do is remoing this book from the oldShelf list in App and adding it to the new shelf list
+  
+  
+//call the handler in App component which will update the list of books by shelf 
+    this.props.updateBooks(book,oldShelf,newShelf)
 
 
 }
@@ -149,8 +159,10 @@ console.log("bookID  in handleChange : "+book.id)
         
           <div className="search-books">
           <div className="search-books-bar">
-            <button className="close-search" onClick={() => {history.push('/')}}>Close</button>
-            <div className="search-books-input-wrapper">
+          <Link to="/" className="close-search">
+            Close
+          </Link>
+                <div className="search-books-input-wrapper">
           
               <input type="text" placeholder="Search by title or author"   onChange={(event) => this.updateSearch(event.target.value)}/>
 
@@ -168,8 +180,8 @@ console.log("bookID  in handleChange : "+book.id)
                    
                       return (
                     
-                        <Book book={book}  changeBookState ={this.handleChangeBookState} shelf={this.props.shelf}/>
-                      
+                        <Book  key={book.id} book={book} changeBookState ={this.handleChangeBookState} shelf={this.props.shelf}/>
+
                       )
                     
                    

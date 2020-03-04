@@ -59,7 +59,7 @@ body, .app {
   height: 50px;
   border-radius: 50%;
   background: #2e7d32;
-  background-image: url('./icons/search.png');
+  background-image: url('./icons/add.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 28px;
@@ -201,4 +201,11 @@ button:active {
 
   text-align: center;
   margin :100px;
+}
+
+
+.select option:checked::before{
+
+color:red
+  
 }

@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import ReactDOM from 'react-dom'
-
+import PropTypes from 'prop-types';
 
 class Book extends React.Component{
         
@@ -11,10 +11,27 @@ class Book extends React.Component{
 
         
   */     
+
+  let shelf = this.props.book.shelf ?this.props.book.shelf:"none"
+
+        this.state={
+            shelf: shelf
+
+
+        }
+
+
       }
 
 
-      
+      changeBookShelf(newShelf){
+
+        this.setState({
+
+          shelf:newShelf
+
+        })
+      }
      
 
       
@@ -35,11 +52,11 @@ class Book extends React.Component{
               <div className="book-top">
                 <div className="book-cover" style={{  width: 128, height: 193, backgroundImage: `url('${this.props.book.imageLinks?this.props.book.imageLinks['smallThumbnail']:'./icons/not_available_book.jpg' }')` }}></div>
                 <div className="book-shelf-changer">
-                  <select value={this.props.shelf}  onChange={(e)=> this.props.changeBookState(e,this.props.book)}>
+                  <select className="select" value={this.state.shelf}  onChange={(e)=> this.props.changeBookState(e,this,this.state.shelf)}>
                     <option value="move" disabled>Move to...</option>
-                    <option value="currentlyReading">Currently Reading</option>
-                    <option value="wantToRead">Want to Read</option>
-                    <option value="read">Read</option>
+                    <option value="currentlyReading" >Currently Reading</option>
+                    <option value="wantToRead" >Want to Read</option>
+                    <option value="read" >Read</option>
                     <option value="none">None</option>
                   </select>
                 </div>
@@ -56,8 +73,6 @@ class Book extends React.Component{
 
 
     }
-
-
 
 
 
