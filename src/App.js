@@ -54,37 +54,38 @@ class App extends React.Component {
       });
   }
 
-  updateBooks = (book, oldShelf, newShelf) => {
+
+
+async updateBooks(book, oldShelf, newShelf) {
     console.log("updateBooks is called ");
 
-    console.log("shelf book in updateBooks: " + book.props.book.shelf);
-    console.log("oldShelf book in updateBooks: " + this.state[oldShelf]);
-    console.log("oldShelf book in updateBooks: " + newShelf);
+    console.log("oldShelf book in updateBooks: " + oldShelf);
+    console.log("newShelf book in updateBooks: " + newShelf);
+    const books = this.state[newShelf];
+    const isExist = this.state.books && books.find(shelfBook => shelfBook.id === book.id);
 
-    console.log("updtae : " + BooksAPI.update(book.props.book, newShelf));
+    await BooksAPI.update(book.props.book, newShelf);
 
-    BooksAPI.update(book.props.book, newShelf);
+  //  if (oldShelf && newShelf && newShelf !=="none") {
+if(!isExist){
 
-    if (!oldShelf) {
-      this.setState(previous => ({
-        [newShelf]: previous[newShelf].concat(book.props.book)
-      }));
-    } else {
-      if (newShelf || newShelf === "none") {
-        this.setState(previous => ({
-          [newShelf]: previous[newShelf].concat(book.props.book),
-          [oldShelf]: previous[oldShelf].filter(
-            shelfBook => shelfBook.id !== book.props.book.id
-          )
-        }));
-      } else {
-        this.setState(previous => ({
-          [oldShelf]: previous[oldShelf].filter(
-            shelfBook => shelfBook.id !== book.props.book.id
-          )
-        }));
-      }
-    }
+  
+    this.setState(previous => ({
+      [newShelf]: previous[newShelf].concat([{ ...book.props.book, ...{ shelf: newShelf } }]),
+      [oldShelf]: previous[oldShelf].filter(
+        shelfBook => shelfBook.id !== book.props.book.id
+      )
+    }));
+
+  
+
+}
+  
+      
+  //  }/* else { */
+    
+
+    //}
   };
 
   async updateSearch(search, searchBar) {
